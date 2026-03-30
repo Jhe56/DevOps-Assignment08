@@ -3,4 +3,10 @@ Note: In this repo is a packer and terraform directory. After going through the 
 
 ## Getting Started
 * Ubuntu/WSL users must install HashiCorp's latest version of Packer and Terraform
-* Users 
+* User should also have an ssh key and a key-pair created in their ~/.ssh directory
+* Users should also have run [aws configure] and input their aws academy credentials
+
+## Packer
+In the packer directory run the following commands:
+* packer init amazon-linux.pkr.hcl
+* packer build -var "public_key_path=/YOUR PUBLIC KEY PATH/.ssh/id_rsa.pub" amazon-linux.pkr.hcl
