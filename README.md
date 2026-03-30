@@ -25,4 +25,9 @@ During the process you'll see a "transaction summary" of the the following insta
 To tell our EC2 instances: "THIS should be here" 
 They can also be viewed in our .hcl file, ln 40, in build{...}
 
+At some point the process may hang for 4-6 minutes, with the message:
+<img width="1045" height="40" alt="image" src="https://github.com/user-attachments/assets/a480d1c2-0979-4d65-b42e-ff25f9b63d32" />
+
+Just let it run, and at the very end it will spit out your AMI ID, which you can also view in aws ec2 under AMIs
+
 ## Terraform
