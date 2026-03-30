@@ -23,3 +23,6 @@ During the process you'll see a "transaction summary" of the the following insta
 <img width="1928" height="861" alt="image" src="https://github.com/user-attachments/assets/c1673a1b-fea8-47e3-8c5c-1e7d9415afba" />
 
 To tell our EC2 instances: "THIS should be here" 
+They can also be viewed in our .hcl file, ln 40, in build{...}
+
+## Terraform
