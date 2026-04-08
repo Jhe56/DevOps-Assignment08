@@ -14,19 +14,19 @@ variable "public_key_path" {
 source "amazon-ebs" "ami" {
   region        = "us-east-1"
   instance_type = "t2.micro"
-  ssh_username  = "ec2-user"
+  ssh_username  = "ubuntu"
 
   ami_name = "devops-ami-{{timestamp}}"
 
   tags = {
-    Name      = "awsl-instance"
+    Name      = "ubuntu-instance"
     Project   = "Assignment11"
     CreatedBy = "packer-jhe56"
   }
 
   source_ami_filter {
     filters = {
-      name                = "al2023-ami-*-x86_64"
+      name                = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }
@@ -48,11 +48,11 @@ build {
       "sudo dnf install -y docker",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
-      "mkdir -p /home/ec2-user/.ssh",
-      "cat /tmp/key.pub >> /home/ec2-user/.ssh/authorized_keys",
-      "chown -R ec2-user:ec2-user /home/ec2-user/.ssh",
-      "chmod 700 /home/ec2-user/.ssh",
-      "chmod 600 /home/ec2-user/.ssh/authorized_keys"
+      "mkdir -p /home/ubuntu/.ssh",
+      "cat /tmp/key.pub >> /home/ubuntu/.ssh/authorized_keys",
+      "chown -R ubuntu:ubuntu /home/ubuntu/.ssh",
+      "chmod 700 /home/ubuntu/.ssh",
+      "chmod 600 /home/ubuntu/.ssh/authorized_keys"
     ]
   }
 }

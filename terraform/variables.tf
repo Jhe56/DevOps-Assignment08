@@ -6,8 +6,7 @@ variable "aws_region" {
 
 variable "project_name" {
   type        = string
-  description = "Prefix for resource names"
-  default     = "assignment08"
+  description = "YOUR PROJECT NAME"
 }
 
 variable "my_ip" {
@@ -17,12 +16,17 @@ variable "my_ip" {
 
 variable "key_name" {
   type        = string
-  description = "assignment08-key"
+  description = "YOUR KEYNAME"
 }
 
-variable "custom_ami_id" {
+variable "custom_ami_id_awsl" {
   type        = string
-  description = "YOUR AMI ID"
+  description = "YOUR AWSL AMI ID"
+}
+
+variable "custom_ami_id_ubuntu" {
+  type        = string
+  description = "YOUR UBUNTU AMI ID"
 }
 
 variable "instance_type" {
