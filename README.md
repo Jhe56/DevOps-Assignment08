@@ -18,6 +18,8 @@ In the terraform directory run:
   * You will be prompted for (in this order) Ansible Ami ID, AWSL AMI ID, Ubuntu AMI ID, Key-Pair Name, Your IP, Project Name
 * terraform apply tfplan (or terraform apply -auto-approve tfplan)
 
+Make sure you save the output information.
+
 ## Ansible
 To ssh into the ansible controller instance you must temporarily "forward" your "local ssh agent" telling it, "USE THIS KEY":
 
@@ -26,11 +28,72 @@ To ssh into the ansible controller instance you must temporarily "forward" your 
 
 Now you can ssh into your bastion using the following:
 
-**ssh -A -i ~/.ssh/assignment08-key.pem ec2-user@<BASTION_PUBLIC_IP>**
+**ssh -A -i ~/.ssh/assignment08-key.pem ec2-user@<Ans_Controller_IP>**
 
-And then ssh into your ec2 instance with:
-**ssh ec2-user@<Private_IP>**
+[cd] into ansible_quickstart and create the following files:
+### inventory.ini
+```
+[myhosts]
+#aws instances
+[aws-ip-1]       ansible_user=ec2-user
+[aws-ip-2]       ansible_user=ec2-user
+[aws-ip3]        ansible_user=ec2-user
+#ubuntu instances
+[ubuntu-ip-1]    ansible_user=ubuntu
+[ubuntu-ip-2]    ansible_user=ubuntu
+[ubuntu-ip-3]    ansible_user=ubuntu
+```
+Now you can run the commands:
+* ansible-inventory -i inventory.ini --list
+* ansible myhosts -m ping -i inventory.ini
 
-For further confirmation you can check if docker is available by running **docker version** 
+**Note: the ping command may seem to hang: just type yes, this is due to one of a couple of the instances responding faster than the prompt [yes/no]**
 
-To exit out of the ec2 instance and return to the bastion you can just hit Ctrl+D and again if you wish to exit out of the bastion.
+You could also just ssh into each instance first if you prefer.
+
+### playbook.yaml
+```
+#name of our play
+- name: My play
+  #references our inventory.ini host list (name/category: myhosts)
+  hosts: myhosts
+  #function in names
+  tasks:
+   - name: Ping my hosts
+     ansible.builtin.ping:
+
+   - name: Print message
+     ansible.builtin.debug:
+       msg: Running!
+       
+   #registers instance's current docker version
+   - name: Register Docker Version
+     ansible.builtin.shell: docker --version
+     register: instance_docker_version
+
+   #checks if docker needs an update (will just run sudo apt update)
+   - name: Check/Update Ubuntu Docker
+     ansible.builtin.shell: sudo apt update
+     when:
+       - ansible_user=="ubuntu"
+       #current latest version hardcoded rather than curled and registered (feel free to change)
+       - instance_docker_version.stdout.find('29.4.0') < 1 
+
+   - name: Check/Update AWSL Docker Version
+     ansible.builtin.shell: sudo apt update docker -y
+     when:
+       - ansible_user=="ec2-user"
+       - instance_docker_version.stdout.find('25.0.14') < 1
+
+   - name: Register Disk Usage
+     ansible.builtin.shell: df -h
+     register: disk_info
+
+   #displays the disk usage of each ec2 instance
+   - name: Displaying Disk Usage
+     ansible.builtin.debug:
+       var: disk_info.stdout
+```
+<sub>Not very friendly if working with a specific docker version but otherwise compliant</sub>
+
+Run: ansible-playbook -i inventory.ini playbook.yaml
