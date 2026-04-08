@@ -48,6 +48,7 @@ build {
       "sudo dnf install -y docker",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
+      "sudo systemctl status docker",
       "mkdir -p /home/ec2-user/.ssh",
       "cat /tmp/key.pub >> /home/ec2-user/.ssh/authorized_keys",
       "chown -R ec2-user:ec2-user /home/ec2-user/.ssh",

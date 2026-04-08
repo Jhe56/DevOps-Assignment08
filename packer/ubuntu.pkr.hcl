@@ -44,15 +44,6 @@ build {
   }
 
   provisioner "shell" {
-    inline = [
-      "sudo dnf install -y docker",
-      "sudo systemctl start docker",
-      "sudo systemctl enable docker",
-      "mkdir -p /home/ubuntu/.ssh",
-      "cat /tmp/key.pub >> /home/ubuntu/.ssh/authorized_keys",
-      "chown -R ubuntu:ubuntu /home/ubuntu/.ssh",
-      "chmod 700 /home/ubuntu/.ssh",
-      "chmod 600 /home/ubuntu/.ssh/authorized_keys"
-    ]
+    script = "ubuntu-setup.sh"
   }
 }
