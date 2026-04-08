@@ -75,7 +75,7 @@ resource "aws_vpc_security_group_egress_rule" "private_instance_egress" {
 #I think for simplicity (rather than making an aws ec2 instance that can also run ubuntu)
 #we just make our controller an awsl instance
 resource "aws_instance" "ansible_controller" {
-  ami                         = var.custom_ami_id_awsl
+  ami                         = var.custom_ami_id_ansible_controller
   instance_type               = var.instance_type
   subnet_id                   = module.vpc.public_subnets[0]
   vpc_security_group_ids      = [module.ansible_controller_sg.security_group_id]

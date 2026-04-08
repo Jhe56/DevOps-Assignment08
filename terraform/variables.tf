@@ -19,6 +19,11 @@ variable "key_name" {
   description = "YOUR KEYNAME"
 }
 
+variable "custom_ami_id_ansible_controller" {
+  type        = string
+  description = "YOUR ANSIBLE CONTROLLER AMI ID"
+}
+
 variable "custom_ami_id_awsl" {
   type        = string
   description = "YOUR AWSL AMI ID"

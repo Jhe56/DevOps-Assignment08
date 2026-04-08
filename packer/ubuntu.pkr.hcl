@@ -7,6 +7,14 @@ packer {
   }
 }
 
+variable "name" {
+  type = string
+}
+
+variable "project_name" {
+  type = string
+}
+
 variable "public_key_path" {
   type = string
 }
@@ -19,8 +27,8 @@ source "amazon-ebs" "ami" {
   ami_name = "devops-ami-{{timestamp}}"
 
   tags = {
-    Name      = "ubuntu-instance"
-    Project   = "Assignment11"
+    Name      = var.name
+    Project   = var.project_name
     CreatedBy = "packer-jhe56"
   }
 
